@@ -28,7 +28,7 @@ public class LegacyJavaDateAdapter implements JsonSerializer<Date>, JsonDeserial
         try {
             return simpleDateFormat.parse(dateToParse);
         } catch (ParseException e) {
-            log.info("Failed to parse the Date string: " + dateToParse);
+            logAndPrint("Failed to parse the Date string: " + dateToParse);
             return null;
         }
     }
@@ -36,5 +36,10 @@ public class LegacyJavaDateAdapter implements JsonSerializer<Date>, JsonDeserial
     @Override
     public JsonElement serialize(Date src, Type typeOfSrc, JsonSerializationContext context) {
         return new JsonPrimitive(simpleDateFormat.format(src));
+    }
+
+    private static void logAndPrint(String message) {
+        System.out.println(message);
+        log.info(message);
     }
 }
