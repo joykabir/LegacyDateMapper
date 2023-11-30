@@ -5,7 +5,11 @@ import com.google.gson.GsonBuilder;
 import zk.date.beans.TrainPassenger;
 import zk.date.mapper.JavaDateAdapter;
 
+import java.sql.SQLOutput;
+import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.Locale;
 import java.util.UUID;
 
 public class App {
@@ -21,5 +25,6 @@ public class App {
 
         TrainPassenger javaObject = gson.fromJson(serializedObject, TrainPassenger.class);
         System.out.println("FROM JSON string# : " + javaObject.toString());
+        System.out.println(Instant.now().toEpochMilli());
     }
 }

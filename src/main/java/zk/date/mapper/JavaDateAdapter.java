@@ -19,28 +19,28 @@ import java.time.format.DateTimeParseException;
 import java.util.Date;
 
 public class JavaDateAdapter implements JsonSerializer<Date>, JsonDeserializer<Date> {
-    private DateTimeFormatter dateTimeFormatter;
+	private DateTimeFormatter dateTimeFormatter;
 
-    public JavaDateAdapter() {
-        dateTimeFormatter = new DateTimeFormatterBuilder().appendInstant(3).toFormatter();
-    }
+	public JavaDateAdapter() {
+		dateTimeFormatter = new DateTimeFormatterBuilder().appendInstant(3).toFormatter();
+	}
 
-    @Override
-    public Date deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-        // If input is in UTC, such as the Z (for Zulu) on the end, the Instant class can parse.
-        // yyyy-MM-dd'T'HH:mm:ss.SSS'Z'
-        try {
-            Instant instant = Instant.parse(json.getAsString());
-            return Date.from(instant);
-        } catch (DateTimeParseException e) {
-            System.out.println(e.getMessage());
-        }
-        return null;
-    }
+	@Override
+	public synchronized Date deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+		// If input is in UTC, such as the Z (for Zulu) on the end, the Instant class can parse.
+		// yyyy-MM-dd'T'HH:mm:ss.SSS'Z'
+		try {
+			Instant instant = Instant.parse(json.getAsString());
+			return Date.from(instant);
+		} catch (DateTimeParseException e) {
+			System.out.println(e.getMessage());
+		}
+		return null;
+	}
 
-    @Override
-    public JsonElement serialize(Date date, Type type, JsonSerializationContext context) {
-        Instant instant = date.toInstant();
-        return new JsonPrimitive(dateTimeFormatter.format(instant));
-    }
+	@Override
+	public JsonElement serialize(Date date, Type type, JsonSerializationContext context) {
+		Instant instant = date.toInstant();
+		return new JsonPrimitive(dateTimeFormatter.format(instant));
+	}
 }
